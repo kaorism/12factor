@@ -1,22 +1,22 @@
 ## III. Config
-### Store config in the environment
+### เก็บค่าคอนฟิกไว้ใน environment
 
-An app's *config* is everything that is likely to vary between [deploys](./codebase) (staging, production, developer environments, etc).  This includes:
+*คอนฟิก(config)* ของแอพคือทุกอย่างที่เหมือนจะแต่งต่างระหว่าง [การติดตั้ง](./codebase) (staging, production, developer environments, etc).  โดยรวมถึง:
 
-* Resource handles to the database, Memcached, and other [backing services](./backing-services)
-* Credentials to external services such as Amazon S3 or Twitter
-* Per-deploy values such as the canonical hostname for the deploy
+* ทรัพยากรจัดการกับฐานข้อมูล Memcached หรืออื่นๆ  [backing services](./backing-services)
+* Credentials สำหรับติดต่อไปยังเซอร์วิสภายนอก เช่น Amazon S3 หรือ Twitter
+* ค่าที่ใช้สำหรับการติดตั้ง เช่น ชื่อของที่ตั้งโฮส(Canonical host name) สำหรับในการติดตั้ง
 
-Apps sometimes store config as constants in the code.  This is a violation of twelve-factor, which requires **strict separation of config from code**.  Config varies substantially across deploys, code does not.
+แอพที่เก็บคอนฟิกไว้ใน constants ภายในโค้ดนั้นถือว่าขัดต่อ twelve-factor, ซึ่งจำเป็นต้องแยก **ต้องแยกคอนฟิกออกจากโค้ดอย่างชัดเจน**.  คอนฟิกนั้นจะต่างกันในแต่ละการติดตั้ง แต่ว่าโค้ดจะไม่แตกต่างกัน
 
-A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials.
+วิธีการตรวจสอบว่าแอพใดๆ นั้นมีการจัดเก็บคอนฟิกแยกออกจากโค้ดนั้นสามารถตรวจสอบโดยคิดว่าถ้าหากเปิดโค้ดดูในเวลาใดๆ จะต้องไม่มีการมีการเก็บ credentials ไว้ในโค้ด 
 
-Note that this definition of "config" does **not** include internal application config, such as `config/routes.rb` in Rails, or how [code modules are connected](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html) in [Spring](http://spring.io/).  This type of config does not vary between deploys, and so is best done in the code.
+เพื่อความเข้าใจตรงกัน ความหมายของ "คอนฟิก"  **ไม่ได้** รวมถึงคอนฟิกในภายแอพเช่น `config/routes.rb` ใน Rails, หรือ วิธี [เชื่อมต่อของโมดูลในโค้ด ](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html) ใน [Spring](http://spring.io/).  คอนฟิกชนิดนี้ไม่ได้แตกต่างกันในแต่ละการติดตั้ง ซึ่งการเก็บคอนฟิกชนิดนี้ไว้ในโค้ดนั้นดีที่สุดแล้ว
 
-Another approach to config is the use of config files which are not checked into revision control, such as `config/database.yml` in Rails.  This is a huge improvement over using constants which are checked into the code repo, but still has weaknesses: it's easy to mistakenly check in a config file to the repo; there is a tendency for config files to be scattered about in different places and different formats, making it hard to see and manage all the config in one place.  Further, these formats tend to be language- or framework-specific.
+อีกวิธีหนึ่งของการคอนฟิกคือการใช้คอนฟิกที่ไม่เก็บอยู่ในระบบควบคุมเวอร์ชั่น (revision control) เช่น `config/database.yml` ใน Rails. วิธีนี้เป็นการพัฒนาอย่างมากเมื่อเทียบการเก็บคอนฟิกไว้ใน constant ซึ่งจะเข้าไปอยู่ใน repo แต่ก็ถึอว่ายังมีข้อเสียอยู่: นักพัฒนาอาจเผลอนำเข้าไปอยู่ใน repo; ทำให้มีแนวโน้มที่คอนฟิกจะถูกเก็บในหลายๆ ที่ หลายๆ ฟอร์แมท, ยากที่จะเห็นและจัดการคอนฟิกภายในที่เดียว  นอกจากนี้ฟอร์แมทของคอนฟิกมีแนวโน้มที่จะเป็นไปตามรูปแบบของภาษา หรือ framework
 
-**The twelve-factor app stores config in *environment variables*** (often shortened to *env vars* or *env*).  Env vars are easy to change between deploys without changing any code; unlike config files, there is little chance of them being checked into the code repo accidentally; and unlike custom config files, or other config mechanisms such as Java System Properties, they are a language- and OS-agnostic standard.
+**แอพ twelve-factor เก็บคอนฟิกไว้ใน *environment variables*** (หรือเรียกสั้นๆ ว่า *env vars* หรือ *env*).  ตัวแปร Env นั้นแก้ไขง่ายในแต่ละการติดตั้งโดยไม่จำเป็นต้องแก้ไขโค้ดใดๆ ซึ่งต่างจากการใช้ไฟล์คอนฟิกซึ่งมีโอกาสที่จะถูกนำเข้าไปอยู่ใน repo โดยความบังเอิญ; และไม่เหมือนคอนฟิกไฟล์ที่ทำขึ้นเอง, หรือวิธีการคอนฟิกอื่นๆ เช่น Java System Properties, ตัวแปร Env ไม่ขึ้นอยู่กับมาตรฐานของภาษาหรือ os ใดๆ
 
-Another aspect of config management is grouping.  Sometimes apps batch config into named groups (often called "environments") named after specific deploys, such as the `development`, `test`, and `production` environments in Rails.  This method does not scale cleanly: as more deploys of the app are created, new environment names are necessary, such as `staging` or `qa`.  As the project grows further, developers may add their own special environments like `joes-staging`, resulting in a combinatorial explosion of config which makes managing deploys of the app very brittle.
+อีกมุมมองของการจัดการคอนฟิกคือการจัดกลุ่มคอนฟิก  บางครั้งแอพแบ่งคอนฟิกโดยการตั้งชื่อกลุ่ม (ซึ่งเรียกว่า "environments") ตามการติดตั้งแต่ละที่, ยกตัวอย่างเช่น `development`, `test`, และ `production` environments ใน Rails.  วิธีนี้ไม่ได้สเกลอย่างเรียบร้อยนัก: ยิ่งมีการติดตั้งแอพมากขึ้น ชื่อของ environment ยิ่งเป็นสิ่งจำเป็น เช่น  `staging` หรือ `qa`.  และเมื่อโปรเจคโตขึ้นไปอีก นักพัฒนาอาจจะเพิ่ม environments ของตัวเองไปอีก เช่น  `joes-staging`, ซึ่งจะส่งผลให้เกิดคอนฟิกจำนวนมากทำให้การจัดการการติดตั้งแอพนั่นมีความเปราะบางมาก
 
-In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars.  They are never grouped together as "environments", but instead are independently managed for each deploy.  This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.
+ในแอพ twelve-factor ตัวแปร env นั้นมีการควบคุมเป็นเอกเทศและแยกตัวจากตัวแปร env อื่นๆ โดยจะไม่มีการจับกลุ่มรวมกันและแบ่งเป็นแต่ละ "environments" แต่ว่าจะจัดการแบบเอกเทศในการติดตั้งแต่ละครั้ง  รูปแบบวิธีการนี้จะทำให้สเกลได้อย่างราบลื่นไปตามธรรมชาติของแอพ ซึ่งจะขยายตัวไปตามการติดตั้งไปตลอดช่วงชีวิตของแอพพลิเคชั่นนั้นๆ
