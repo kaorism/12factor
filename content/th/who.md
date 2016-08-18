@@ -1,4 +1,4 @@
-Who should read this document?
+ใครควรอ่านเอกสารนี้?
 ==============================
 
-Any developer building applications which run as a service.  Ops engineers who deploy or manage such applications.
+นักพัฒนาแอพพลิเคชั่นที่รันเป็นเซอร์วิส ผู้ดูแลและติดตั้งแอพพลิเคชั่นเหล่านี้

@@ -2,37 +2,37 @@ The Twelve Factors
 ==================
 
 ## [I. Codebase](./codebase)
-### One codebase tracked in revision control, many deploys
+### โค้ดเบสเดียวสามารถแทร็กได้จากระบบความคุมเวอร์ชั่น (revision control), ติดตั้งได้หลายครั้ง
 
 ## [II. Dependencies](./dependencies)
-### Explicitly declare and isolate dependencies
+### ส่วนที่ขึ้นต่อกัน (dependencies) สามารถประกาศได้จากภายนอกและแยกจากกัน
 
 ## [III. Config](./config)
-### Store config in the environment
+### เก็บคอนฟิกไว้ที่ environment
 
 ## [IV. Backing services](./backing-services)
-### Treat backing services as attached resources
+### จัดการระบบหลังเหมือนกับทรัพยากรที่นำมาติดเพิ่มเติม
 
 ## [V. Build, release, run](./build-release-run)
-### Strictly separate build and run stages
+### แยกส่วนระหว่างสเตจ build และ run อย่างชัดเจน
 
 ## [VI. Processes](./processes)
-### Execute the app as one or more stateless processes
+### ประมวลผลแอพพลิเคชั่นแบบเดียวกับ โปรเซสที่ไม่มีสเตต (stateless) หนึ่งโปรเซสหรือหลายๆโปรเซส
 
 ## [VII. Port binding](./port-binding)
-### Export services via port binding
+### เปิดการเชื่อมต่อกับเซอร์วิสภายนอกผ่านทางพอร์ท
 
 ## [VIII. Concurrency](./concurrency)
-### Scale out via the process model
+### เสกลออกผ่านทางรูปแบบโปรเซส
 
 ## [IX. Disposability](./disposability)
-### Maximize robustness with fast startup and graceful shutdown
+### เพิ่มความทนทาน (robustness) โดยการเริ่มต้นใหม่เร็วและปิดตัว (shutdown) อย่างสมบูรณ์
 
 ## [X. Dev/prod parity](./dev-prod-parity)
-### Keep development, staging, and production as similar as possible
+### ทำให้ development,  staging,  production คล้ายกันให้มากที่สุด
 
 ## [XI. Logs](./logs)
-### Treat logs as event streams
+### จัดการล็อกแบบอีเวนท์สตรีม (event stream)
 
 ## [XII. Admin processes](./admin-processes)
-### Run admin/management tasks as one-off processes
+### รันงาน แอดมิน/จัดการ ด้วยโปรเซสที่รันครั้งเดียวเมื่อต้องการใช้ (one-off process)

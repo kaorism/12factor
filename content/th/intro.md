@@ -1,12 +1,12 @@
-Introduction
+บทนำ
 ============
 
-In the modern era, software is commonly delivered as a service: called *web apps*, or *software-as-a-service*.  The twelve-factor app is a methodology for building software-as-a-service apps that:
+ในยุคสมัยใหม่ บ่อยครั้งที่ซอฟต์แวร์ถูกส่งมอบในรูปแบบของเซอร์วิส: เรียกว่า *เว็บแอพพลิเคชั่น* หรือ *software-as-a-service*.  The twelve-factor แอพ คือวิธีการสร้าง software-as-a-service แอพพลิเคชั่นโดยที่:
 
-* Use **declarative** formats for setup automation, to minimize time and cost for new developers joining the project;
-* Have a **clean contract** with the underlying operating system, offering **maximum portability** between execution environments;
-* Are suitable for **deployment** on modern **cloud platforms**, obviating the need for servers and systems administration;
-* **Minimize divergence** between development and production, enabling **continuous deployment** for maximum agility;
-* And can **scale up** without significant changes to tooling, architecture, or development practices.
+* ใช้รูปแบบการประการค่า **declarative** สำหรับงานอัตโนมัติ เพื่อลดระยะเวลาและค่าใช้จ่ายสำหรับนักพัฒนาใหม่ที่เข้าร่วมโปรเจค
+* ควรมี **clean contract** ไม่ขึ้นต่อกับระบบปฏิบัติการ  ซึ่งจะช่วยเพิ่ม **maximum portability** เพื่อให้สามารถรันบน environment หลากหลาย
+* พร้อมสำหรับการติดตั้ง **deployment** บนคลาวด์ **cloud platforms** ได้โดยไม่ต้องการเซิฟเวอร์หรือผู้ดูแลระบบ
+* **Minimize divergence** ลดความแตกต่างระหว่าง development และ production, มีการใช้ **continuous deployment** เพื่อความคล่องตัว;
+* และสามารถเพิ่มเสกล **scale up** โดยที่ไม่ต้องจำเป็นต้องแก้ไข เครื่องมือ, สถาปัตยกรรม, หรือวิธีการพัฒนาการ จำนวนมาก
 
-The twelve-factor methodology can be applied to apps written in any programming language, and which use any combination of backing services (database, queue, memory cache, etc).
+วิธีการ The twelve-factor สามารถนำไปใช้ในแอพพลิเคชั่นที่เขียนโดยภาษาใดๆ ก็ได้ และใช้กับระบบเบื้องหลังใดๆ ก็ได้ (database, queue, memory cache, etc).

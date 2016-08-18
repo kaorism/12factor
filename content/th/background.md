@@ -1,9 +1,10 @@
-Background
+เบื้องหลัง
 ==========
 
-The contributors to this document have been directly involved in the development and deployment of hundreds of apps, and indirectly witnessed the development, operation, and scaling of hundreds of thousands of apps via our work on the <a href="http://www.heroku.com/" target="_blank">Heroku</a> platform.
+ผู้มีส่วนร่วมในการเขียนเอกสารนี้มีส่วนร่วมโดยตรงในการพัฒนาและติดตั้งแอพพลิเคชั่นมากกว่าร้อยแอพพลิเคชั่น, และมีส่วนร่วมโดยอ้อมกับการพัฒนา ปฏิบัติการและเสกล ไม่ต่ำกว่าแสนแอพพลิเคชั่น ผ่านทางงานของเราบนแพลตฟอร์ม <a href="http://www.heroku.com/" target="_blank">Heroku</a>.
 
-This document synthesizes all of our experience and observations on a wide variety of software-as-a-service apps in the wild.  It is a triangulation on ideal practices for app development, paying particular attention to the dynamics of the organic growth of an app over time, the dynamics of collaboration between developers working on the app's codebase, and <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/" target="_blank">avoiding the cost of software erosion</a>.
+เอกสารนี้เกิดจากการรวบรวมประสบการณ์และสังเกตมุมมองต่างๆ ของ software-as-a-service แอพพลิเคชั่นในการใช้งานจริง.  ซึ่งเป็นการพัฒนาแอพพลิเคชั่นจริงในอุดมคติ, โดยในความสนใจต่อการเปลี่ยนแปลงตามธรรมชาติของแอพพลิเคชั่นซึ่งเป็นเติบโตที่ไม่แน่นอน, ความไม่แน่นอนของการร่วมมือกันของนักพัฒนาบนโค้ดเบสของแอพพลิเคชั่น และ <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/" target="_blank">การหลีกเลี่ยงความเสียหายจากการเสื่อมถอยของซอฟต์แวร์</a>.
 
-Our motivation is to raise awareness of some systemic problems we've seen in modern application development, to provide a shared vocabulary for discussing those problems, and to offer a set of broad conceptual solutions to those problems with accompanying terminology.  The format is inspired by Martin Fowler's books *<a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC" target="_blank">Patterns of Enterprise Application Architecture</a>* and *<a href="https://books.google.com/books/about/Refactoring.html?id=1MsETFPD3I0C" target="_blank">Refactoring</a>*.
+
+แรงบรรดาลใจของเราคือการกระตุ้นให้ตระหนักถึงระบบปัญหาของที่เราได้เห็นในการพัฒนาซอฟต์แวร์ในสมัยใหม่, เพื่อเป็นการแชร์การใช้คำศัพท์เพื่อในการอ้างอิง, และเพื่อเสนอคอนเซ็ปวิธีการแก้ปัญหาเหล่านั้นโดยคำศัพท์เฉพาะทางที่เพิ่มเข้ามา ซึ่งฟอร์แมตนี้ได้รับแรงบรรดาลใจจากหนังสือของ Martin Fowler ได้แก่ *<a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC" target="_blank">Patterns of Enterprise Application Architecture</a>* และ *<a href="https://books.google.com/books/about/Refactoring.html?id=1MsETFPD3I0C" target="_blank">Refactoring</a>*.
 
