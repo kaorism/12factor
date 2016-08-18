@@ -1,18 +1,17 @@
 ## I. Codebase
-### One codebase tracked in revision control, many deploys
+### โค้ดเบสเดียวสามารถแทร็กได้ในระบบควบคุมเวอร์ชั่น, ติดตั้งได้หลายที่
 
-A twelve-factor app is always tracked in a version control system, such as [Git](http://git-scm.com/), [Mercurial](http://mercurial.selenic.com/), or [Subversion](http://subversion.apache.org/).  A copy of the revision tracking database is known as a *code repository*, often shortened to *code repo* or just *repo*.
+แอพ twelve-factor สามารถแทร็กได้ในระบบควบคุมเวอชั่น (version control system) ยกตัวอย่างเช่น [Git](http://git-scm.com/), [Mercurial](http://mercurial.selenic.com/), หรือ [Subversion](http://subversion.apache.org/). สำเนาของฐานข้อมูล (database) ของระบบควบคุมเวอร์ชั่นเรียกว่า *code repository*, บางครั้งเรียกย่อๆ ว่า *code repo* หรือเพียงแค่ *repo*.
 
-A *codebase* is any single repo (in a centralized revision control system like Subversion), or any set of repos who share a root commit (in a decentralized revision control system like Git).
+*โค้ดเบส (codebase)* คือ repo ใดๆ (ในระบบควบคุมเวอร์ชั่นแบบ centralized revision control system เช่น Subversion), หรือ repos ที่มีคนแชร์ root commit (ในระบบควบคุมเวอร์ชั่นแบบ decentralized revision control system เช่น Git)
 
 ![One codebase maps to many deploys](/images/codebase-deploys.png)
 
-There is always a one-to-one correlation between the codebase and the app:
+ความสัมพันธ์ระหว่างโค้ดเบสและแอพจะเป็นแบบ หนึ่งต่อหนึ่ง (one-to-one) เสมอ :
 
-* If there are multiple codebases, it's not an app -- it's a distributed system.  Each component in a distributed system is an app, and each can individually comply with twelve-factor.
-* Multiple apps sharing the same code is a violation of twelve-factor.  The solution here is to factor shared code into libraries which can be included through the [dependency manager](./dependencies).
+* กรณีถ้ามีหลายโค้ดเบส จะไม่ใช่แอพ -- มันคือระบบแบบกระจาย (distributed system) แต่ละคอมโพเน้นท์ในระบบแบบกระจายคือหนึ่งแอพและแต่ละแอพจะต้องเป็นไปตาม twelve-factor
+* กรณีหลายแอพที่แชร์โค้ดเดียวกันจะถือว่าขัดต่อ twelve-factor  วิธีการแก้คือจัดการแชร์โค้ดในรูปแบบไลบรารี ซึ่งสามารถในมาร่วมใช้งานผ่านทาง [การจัดการ dependency](./dependencies).
 
-There is only one codebase per app, but there will be many deploys of the app.  A *deploy* is a running instance of the app.  This is typically a production site, and one or more staging sites.  Additionally, every developer has a copy of the app running in their local development environment, each of which also qualifies as a deploy.
+ถึงแม้ว่าจะมีเพียงหนึ่งโค้ดเบสต่อแอพแต่ว่าจะมีการติดตั้ง (deploy) ได้หลายที่  *การติดตั้ง (deploy)* คืออินสแตนซ์ (instance) ของแอพที่กำลังทำงานอยู่.  โดยปกติจะเป็น  production 1 เว็บไซด์ และ staging 1 เว็บไซด์ขึ้นไป   นอกเหนือจากนี้ แอพที่รันอยู่บน local development environment ของนักพัฒนาแต่ละคนก็นับเป็นการติดตั้ง (deploy) เช่นเดียวกัน.
 
-The codebase is the same across all deploys, although different versions may be active in each deploy.  For example, a developer has some commits not yet deployed to staging; staging has some commits not yet deployed to production.  But they all share the same codebase, thus making them identifiable as different deploys of the same app.
-
+โค้ดเบสจะเป็นโค้ดเบสเดียวกันในแต่ละการติดตั้งถึงแม้ว่าอาจจะติดตั้งเวอร์ชั่นต่างกัน  ยกตัวอย่างเช่น นักพัฒนามีบาง commit ที่ยังไม่ได้ติดตั้งไปยัง staging หรือ staging มีบาง commit ที่ยังไม่ได้ติดตั้งไปยัง production  แต่ทว่าเนื่องจากทุก deploy ใช้โค้ดเบสเดียวกัน ดังนั้นต้องสามารถระบุความแตกต่างได้ของ แต่ละ deploy ในแอพนั้นๆ ได้
