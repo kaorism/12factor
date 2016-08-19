@@ -1,19 +1,19 @@
 ## V. Build, release, run
-### Strictly separate build and run stages
+### แยกส่วนระหว่างขั้นตอน build และ run อย่างชัดเจน
 
-A [codebase](./codebase) is transformed into a (non-development) deploy through three stages:
+[โค้ดเบส](./codebase) จะถูกเปลี่ยนมาเป็น การติดตั้ง(non-development)  โดยผ่าน 3 ขั้นตอน(stage):
 
-* The *build stage* is a transform which converts a code repo into an executable bundle known as a *build*.  Using a version of the code at a commit specified by the deployment process, the build stage fetches vendors [dependencies](./dependencies) and compiles binaries and assets.
-* The *release stage* takes the build produced by the build stage and combines it with the deploy's current [config](./config).  The resulting *release* contains both the build and the config and is ready for immediate execution in the execution environment.
-* The *run stage* (also known as "runtime") runs the app in the execution environment, by launching some set of the app's [processes](./processes) against a selected release.
+* *ขั้นตอน build* คือการเปลี่ยนแปลงโดยเปลี่ยงโค้ดภายใน repo ให้อยู่ในรูปของ bundle ที่รันได้ หรือที่รู้จักกันว่า *build*.  ใช้เวอร์ชั่นของโค้ดที่คอมมิต ระบุได้จากโดยการดำเนินการติดตั้ง (deployment) ในขั้นตอน build จะดึง [dependencies](./dependencies) ของ vendor และคอมไพล์ binaries และ assets
+* *ขั้นตอน release* จะนำ build ที่ได้จากขั้นตอน build มารวมกับ [คอนฟิก](./config) ของการติดตั้งนั้นๆ   ซึ่งผลลัพท์คือ *release* จะมีทั้ง build และ คอนฟิก และพร้อมจะนำมารันได้ทันทีบน environment ที่ใช้สำหรับรันแอพ
+* *ขั้นตอน run* (หรือที่เรียกว่า "runtime") คือการรันแอพใน environment สำหรับรันแอพ โดยการเปิดกลุ่ม [โปรเซส](./processes) ของแอพใน release ที่เลือก
 
 ![Code becomes a build, which is combined with config to create a release.](/images/release.png)
 
-**The twelve-factor app uses strict separation between the build, release, and run stages.**  For example, it is impossible to make changes to the code at runtime, since there is no way to propagate those changes back to the build stage.
+**แอพ twelve-factor จะแยกส่วนระหว่างขั้นตอน build และ run อย่างชัดเจน** ยกตัวอย่างเช่น เป็นไปไม่ได้เลยที่จะแก้ไขโค้ดขณะที่รันอยู่เนื่องจากไม่มีทางที่จะนำการแก้ไขนี้กลับไปยังขั้นตอน build
 
-Deployment tools typically offer release management tools, most notably the ability to roll back to a previous release.  For example, the [Capistrano](https://github.com/capistrano/capistrano/wiki) deployment tool stores releases in a subdirectory named `releases`, where the current release is a symlink to the current release directory.  Its `rollback` command makes it easy to quickly roll back to a previous release.
+เครื่องมือสำหรับการติดตั้งโดยปกติจะเสนอเครื่องมือสำหรับจัดการ release ความสามารถที่เห็นชัดที่สุดคือ ความสามารถในการ roll back กลับไปยัง release ก่อนหน้าได้  ยกตัวอย่างเช่น [Capistrano](https://github.com/capistrano/capistrano/wiki) เก็บ releases ไว้ใน subdirectory ชื่อว่า `releases`, โดยที่ release ปัจจุบัน จะสร้าง symlink ไปยัง release directory ปัจจุบัน  คำสั่งของ Capistrano `rollback` นั่นทำให้ง่ายที่จะ roll back ไปยัง release ก่อนหน้า
 
-Every release should always have a unique release ID, such as a timestamp of the release (such as `2011-04-06-20:32:17`) or an incrementing number (such as `v100`).  Releases are an append-only ledger and a release cannot be mutated once it is created.  Any change must create a new release.
+แต่ละ release ควรจะมี ID การ release ที่ต่างกัน, เช่น timestamp ของ release (เช่น `2011-04-06-20:32:17`) หรือ ตัวเลขที่เพิ่มขึ้นเรื่อยๆ  (เช่น `v100`).  releases จะเป็นแบบ append-only เท่านั้นและไม่สามารถเปลี่ยนแปลง(mutated) ได้หลังจากสร้างขึ้นมา ถ้ามีการเปลี่ยนแปลงใดๆ จะต้องสร้าง release ใหม่ขึ้นมา
 
-Builds are initiated by the app's developers whenever new code is deployed.  Runtime execution, by contrast, can happen automatically in cases such as a server reboot, or a crashed process being restarted by the process manager.  Therefore, the run stage should be kept to as few moving parts as possible, since problems that prevent an app from running can cause it to break in the middle of the night when no developers are on hand.  The build stage can be more complex, since errors are always in the foreground for a developer who is driving the deploy.
+Build จะเริ่มต้นกระบวนการจากนักพัฒนาแอพ เมื่อต้องการนำโค้ดใหม่ไปติดตั้ง  ในทางตรงกันข้าม การรัน Runtime execution จะสามารถเกิดขึ้นเกิดขึ้นอย่างอัตโนมัติ เช่น การ รีบูตเซอร์เวอร์, หรือโปรเซสที่ค้างอยู่ถูก restart โดย process manager  เพราะฉะนั้นในขั้นตอน run ควรมีความซับซ้อนให้น้อยที่สุด เนื่องจากเมื่อเกิดปัญหาที่ทำให้แอพหยุดการทำงานกลางดึกจะไม่มีนักพัฒนาคอยดูแล  ในส่วนของขั้นตอน build สามารถมีความซับซ้อนได้เนื่องจากหากมีข้อผิดพลาด ก็จะอยู่ในสายตาของนักพัฒนาที่จะทำการติดตั้งแอพ
 
