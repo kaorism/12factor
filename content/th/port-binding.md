@@ -1,14 +1,14 @@
 ## VII. Port binding
-### Export services via port binding
+### เปิดการเชื่อมต่อกับเซอร์วิสภายนอกผ่านทางพอร์ท
 
-Web apps are sometimes executed inside a webserver container.  For example, PHP apps might run as a module inside [Apache HTTPD](http://httpd.apache.org/), or Java apps might run inside [Tomcat](http://tomcat.apache.org/).
+เว็บแอพบางครั้งถูกรันภายในคอนเทนเนอร์ของเว็บเซอร์เวอร์ ยกตัวอย่างเช่น  แอพ PHP อาจรันในโมดูลภายใน [Apache HTTPD](http://httpd.apache.org/), หรือ แอพ Java อาจรันภายใน [Tomcat](http://tomcat.apache.org/).
 
-**The twelve-factor app is completely self-contained** and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service.  The web app **exports HTTP as a service by binding to a port**, and listening to requests coming in on that port.
+**แอพ twelve-factor จะต้องรันได้ตัวเองแบบสมบูรณ์แบบ** และจะต้องไม่ขึ้นอยู่กับเว็บเซอร์เวอร์ใน environment ที่ใช้งานเพื่อสร้างเซอร์วิสสำหรับเชื่อมต่อเก็บเว็บ(web-facing)   ในเว็บแอพจะ **เปิดการเชื่อมต่อแบบ HTTP ในรูปแบบเซอร์วิสโดยการเชื่อมต่อกับพอร์ต** และรอการรีเควสที่มาจากพอร์ตนั้นๆ 
 
-In a local development environment, the developer visits a service URL like `http://localhost:5000/` to access the service exported by their app.  In deployment, a routing layer handles routing requests from a public-facing hostname to the port-bound web processes.
+ใน development environment ของนักพัฒนานั้น นักพัฒนาเข้าไปยัง URL ของเวอร์วิส เช่น `http://localhost:5000/` เพื่อเข้าถึงเซอร์วิสที่แอพเปิดให้เข้าถึง  ในส่วนของการติดตั้ง เลเยอร์ routing จะดูแลการเชื่อมโยงรีเควสจาก public-facing hostname ไปยังพอร์ตที่เชื่อมต่อกับโปรเซสของเว็บ.
 
-This is typically implemented by using [dependency declaration](./dependencies) to add a webserver library to the app, such as [Tornado](http://www.tornadoweb.org/) for Python, [Thin](http://code.macournoyer.com/thin/) for Ruby, or [Jetty](http://jetty.codehaus.org/jetty/) for Java and other JVM-based languages.  This happens entirely in *user space*, that is, within the app's code.  The contract with the execution environment is binding to a port to serve requests.
+นี่คือวิธีการใช้งานโดยทั่วไปของ [dependency declaration](./dependencies) โดยการนำไลบลารี่เว็บเซอร์เวอร์ไปยังแอพ เช่น [Tornado](http://www.tornadoweb.org/) ของ Python, [Thin](http://code.macournoyer.com/thin/) ของ Ruby หรือ [Jetty](http://jetty.codehaus.org/jetty/) สำหรับ Java และ ภาษาที่ใช้ JVM  ทุกอย่างนี้เกิดขึ้นภายใน *user space* เพียงแค่ในโค้ดของแอพเท่านั้น  การเชื่อมต่อกับ environment ที่ใช้งานเพียงแต่เชื่อมต่อทางพอร์ตและส่งรีเควสเข้าไป
 
-HTTP is not the only service that can be exported by port binding.  Nearly any kind of server software can be run via a process binding to a port and awaiting incoming requests.  Examples include [ejabberd](http://www.ejabberd.im/) (speaking [XMPP](http://xmpp.org/)), and [Redis](http://redis.io/) (speaking the [Redis protocol](http://redis.io/topics/protocol)).
+HTTP ไม่ใช่เพียงเซอร์วิสเดียวที่สามารถเปิดให้เชื่อมต่อทางพอร์ต  เซอร์เวอร์เกือบจะทุกรูปแบบสามารถรันโดยการเชื่อมต่อโปรเซสเข้าทางพอร์ทและรอรีเควสเข้ามา  ยกตัวอย่างเช่น [ejabberd](http://www.ejabberd.im/) (อาศัย [XMPP](http://xmpp.org/)), และ [Redis](http://redis.io/) (อาศัย [Redis protocol](http://redis.io/topics/protocol)).
 
-Note also that the port-binding approach means that one app can become the [backing service](./backing-services) for another app, by providing the URL to the backing app as a resource handle in the [config](./config) for the consuming app.
+วิธี port-binding นี้รวมถึงการที่แอพๆ หนี่งสามารถเป็น [เซอร์วิสเบื้องหลัง](./backing-services) สำหรับแอพอื่นๆ ได้ โดยการให้ URL กับแอพที่ใช้ เพื่อนำมาติดตั้งเป็นมาทรัพยากรใน [config](./config) สำหรับแอพที่ต้องการใช้งาน
